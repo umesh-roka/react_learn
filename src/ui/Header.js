@@ -16,7 +16,8 @@ const Header = () => {
           return isActive ? 'text-pink-800' : 'text-white'
         }}>About</NavLink>
         <NavLink to='contact'>Contact</NavLink>
-
+<NavLink to='/form'>Add_Form</NavLink>
+<NavLink to='/updateform'>Update_Form</NavLink>
       </nav>
 
 

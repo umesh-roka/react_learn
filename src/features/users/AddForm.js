@@ -1,5 +1,5 @@
 import React from 'react'
-import * as Yup from'yup';
+import * as Yup from 'yup';
 import {
   Card,
   Input,
@@ -15,6 +15,7 @@ import { useFormik } from 'formik';
 import { useDispatch } from 'react-redux';
 import { nanoid } from '@reduxjs/toolkit';
 import { addUser } from './useSlice';
+import { useNavigate } from 'react-router';
 
 
 
@@ -22,20 +23,22 @@ const AddForm = () => {
 
   const dispatch = useDispatch();
 
-const userSchema = Yup.object({
-  username: Yup.string()
-    
-    .required('Required'),
-  lastName: Yup.string()
-  .matches(/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/,'required all fiels')
-    .required('Required'),
-  email: Yup.string().email('Invalid email address').required('Required'),
-hobbies:Yup.array().min(1).required(),
-image: Yup.mixed().test('fileType','invalid Image',(e)=>{
-const filesType = ["image/jpeg","image?jpg","image/png"];
-return filesType.includes(e.type);
-}).required()
-});
+  const nav = useNavigate();
+
+  const userSchema = Yup.object({
+    username: Yup.string()
+
+      .required('Required'),
+    lastName: Yup.string()
+      .matches(/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/, 'required all fiels')
+      .required('Required'),
+    email: Yup.string().email('Invalid email address').required('Required'),
+    hobbies: Yup.array().min(1).required(),
+    image: Yup.mixed().test('fileType', 'invalid Image', (e) => {
+      const filesType = ["image/jpeg", "image?jpg", "image/png"];
+      return filesType.includes(e.type);
+    }).required()
+  });
 
 
   const { handleChange, handleSubmit, values, setFieldValue, errors, touched } = useFormik({
@@ -50,14 +53,13 @@ return filesType.includes(e.type);
       image: null
     },
     onSubmit: (val) => {
-  dispatch(addUser({...val, id:nanoid()}))
+      dispatch(addUser({ ...val, id: nanoid() }));
+      nav(-1);
     },
-    validationSchema:userSchema,
-   
+    validationSchema: userSchema,
+
+
   });
-
-
- 
 
   return (
     <div className='max-w-[400px] p-2'>
@@ -72,7 +74,7 @@ return filesType.includes(e.type);
 
           <div>
             <Input
-            error={errors.username && touched.username}
+              error={errors.username && touched.username}
               name='username'
               onChange={handleChange}
               value={values.username}
@@ -82,13 +84,13 @@ return filesType.includes(e.type);
 
           <div>
             <Input
-          
+
               name='email'
               onChange={handleChange}
               value={values.email}
               label="Email" />
-              {errors.email && touched.email &&<p>{errors.email}</p>}
-            
+            {errors.email && touched.email && <p>{errors.email}</p>}
+
           </div>
 
           <div >
@@ -107,59 +109,59 @@ return filesType.includes(e.type);
 
 
             </div>
-</div>
-            <div>
-          
-              <h1>Select Your Hobby</h1>
-              <div className="flex w-max gap-4">
-                {checkData.map((check, i) => {
-                  return <Checkbox
-               
-                    key={i}
-                    name="hobbies"
-                    onChange={handleChange}
-                    label={check.label}
-                    value={check.value}
-                    color={check.color}
-                  />
-                })}
-              
+          </div>
+          <div>
 
-              </div>
-              {errors.hobbies && touched.hobbies && <p className='text-red-600'>{errors.hobbies}</p>}
+            <h1>Select Your Hobby</h1>
+            <div className="flex w-max gap-4">
+              {checkData.map((check, i) => {
+                return <Checkbox
+
+                  key={i}
+                  name="hobbies"
+                  onChange={handleChange}
+                  label={check.label}
+                  value={check.value}
+                  color={check.color}
+                />
+              })}
+
+
             </div>
+            {errors.hobbies && touched.hobbies && <p className='text-red-600'>{errors.hobbies}</p>}
+          </div>
 
-            <div className="w-72 my-3">
-              <Select name='country' onChange={(e) => setFieldValue('country', e)} label="Select Country">
-                <Option value='nepal'>Nepal</Option>
-                <Option value='india'>India</Option>
-                <Option value='china'>China</Option>
+          <div className="w-72 my-3">
+            <Select name='country' onChange={(e) => setFieldValue('country', e)} label="Select Country">
+              <Option value='nepal'>Nepal</Option>
+              <Option value='india'>India</Option>
+              <Option value='china'>China</Option>
 
-              </Select>
-            </div>
+            </Select>
+          </div>
 
 
-            <div className="w-96">
-              <Textarea
-                name='msg'
-                onChange={handleChange}
-                value={values.msg}
-                label="Message" />
-            </div>
-      
-<div>
-  <Input 
-  name='image'
-  onChange={(e)=>{
-    const file = e.target.files[0];
-    setFieldValue('image',file);
-    setFieldValue('imageReview',URL.createObjectURL(file))
-  }}
-  type='file'
-  />
+          <div className="w-96">
+            <Textarea
+              name='msg'
+              onChange={handleChange}
+              value={values.msg}
+              label="Message" />
+          </div>
 
-  {values.imageReview && <img src={values.imageReview} alt='file'/>}
-</div>
+          <div>
+            <Input
+              name='image'
+              onChange={(e) => {
+                const file = e.target.files[0];
+                setFieldValue('image', file);
+                setFieldValue('imageReview', URL.createObjectURL(file))
+              }}
+              type='file'
+            />
+
+            {values.imageReview && <img src={values.imageReview} alt='file' />}
+          </div>
 
 
 
