@@ -5,11 +5,10 @@ import { userSlice } from "../features/users/useSlice";
 
 
 
-
 export const store = configureStore({
   reducer: {
     [movieSlice.name]: movieSlice.reducer,
-  [userSlice.name]:userSlice.reducer
+    [userSlice.name]: userSlice.reducer
   }
 });
 
