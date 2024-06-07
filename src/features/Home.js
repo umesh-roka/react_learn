@@ -8,8 +8,6 @@ const Home = () => {
   const nav = useNavigate();
   return (
     <div>
-
-
       {users.map((user) => {
         return <div key={user.id}>
           <h1>{user.email}</h1>

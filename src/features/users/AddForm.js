@@ -39,11 +39,21 @@ const AddForm = () => {
       hobbies: [],
       msg: '',
       country: '',
-      imageReview: null,
-      // image: null
+      image: null,
+      imageReview: null
     },
     onSubmit: (val) => {
-      dispatch(addUser({ ...val, id: nanoid() }));
+      const newUser = {
+        username: val.username,
+        email: val.email,
+        gender: val.gender,
+        hobbies: val.hobbies,
+        msg: val.msg,
+        country: val.country,
+        imageReview: val.imageReview,
+        id: nanoid()
+      };
+      dispatch(addUser(newUser));
       nav(-1);
     },
     //validationSchema: userSchema
@@ -152,8 +162,12 @@ const AddForm = () => {
 
                 onChange={(e) => {
                   const file = e.target.files[0];
-                  //setFieldValue('image', file);
-                  setFieldValue('imageReview', URL.createObjectURL(file))
+                  const reader = new FileReader();
+                  reader.readAsDataURL(file);
+                  reader.addEventListener('load', (e) => {
+                    setFieldValue('imageReview', e.target.result);
+                  })
+                  setFieldValue('image', file);
                 }}
                 type='file'
               />
@@ -164,16 +178,7 @@ const AddForm = () => {
 
 
             </div>
-
-
-
-
-
           </div>
-
-
-
-
           <Button type='submit' className="mt-6" fullWidth>
             Submit
           </Button>
