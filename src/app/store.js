@@ -1,6 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { movieSlice } from "../features/movies/movieSlice";
 import { userSlice } from "../features/users/useSlice";
+import { studentSlice } from "../features/student/studentSlice";
 
 
 
@@ -8,7 +9,8 @@ import { userSlice } from "../features/users/useSlice";
 export const store = configureStore({
   reducer: {
     [movieSlice.name]: movieSlice.reducer,
-    [userSlice.name]: userSlice.reducer
+    [userSlice.name]: userSlice.reducer,
+    [studentSlice.name]:studentSlice.reducer
   }
 });
 

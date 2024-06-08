@@ -23,7 +23,7 @@ const UpdateForm = () => {
 
   const existUser = users.find((user) => user.id === id);
 
-
+console.log(existUser);
 
   const userSchema = Yup.object({
     username: Yup.string().required('Required'),

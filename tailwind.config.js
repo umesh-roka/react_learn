@@ -10,7 +10,10 @@ module.exports = withMT({
     extend: {
 
       colors: {
-        purp: 'purple'
+        'blue-black': '#001C1D',
+        'rain':'#2C7973',
+        'cadet-blue':'#004445',
+        'greeney':'#6EBA8E'
       },
       backgroundColor: {
 
