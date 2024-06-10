@@ -1,21 +1,19 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { movieSlice } from "../features/movies/movieSlice";
-import { userSlice } from "../features/users/useSlice";
-import { studentSlice } from "../features/student/studentSlice";
-
-
-
+import { userApi } from "../features/users/userApi";
+import { postApi } from "../features/posts/postApi";
 
 export const store = configureStore({
   reducer: {
-    [movieSlice.name]: movieSlice.reducer,
-    [userSlice.name]: userSlice.reducer,
-    [studentSlice.name]:studentSlice.reducer
-  }
+    [userApi.reducerPath]: userApi.reducer,
+    [postApi.reducerPath]: postApi.reducer
+  },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat([
+      userApi.middleware,
+      postApi.middleware
+    ]),
+
 });
 
-// store.dispatch({
-//   type: 'movieSlice/addMovies',
-//   payload: { n: 90 }
-// });
-// console.log(store.getState());
+
+

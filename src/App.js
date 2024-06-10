@@ -1,24 +1,18 @@
 import React from 'react'
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
+import Home from './features/Home';
+import About from './features/About';
 import RootLayout from './ui/RootLayout';
 import NotFound from './ui/NotFound';
-// import AddStdForm from './features/student/AddStdForm';
-import StdDetail from './features/student/StdDetail';
-import UpdateStd from './features/student/UpdateStd';
-// import UpdateForm from './features/users/UpdateForm';
-import Home from './features/Home';
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <RootLayout />,
     children: [
-      {path:'home',element:<Home/>},
-      {path:'details', element:<StdDetail/>},
-      // { path: 'addForm', element: <AddStdForm/> },
-      // { path: 'updatestd/:id', element: <UpdateStd /> },
-      {path:'/updatestd/:id',element:<UpdateStd/>},
-      // { path: 'about', element: <UpdateForm/> },
+      { index: true, element: <Home /> },
+
+      { path: 'about', element: <About /> },
       { path: '*', element: <NotFound /> },
     ]
   },
