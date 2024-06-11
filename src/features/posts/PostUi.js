@@ -1,39 +1,30 @@
-import { AccordionBody, Button } from '@material-tailwind/react'
+import { AccordionBody,Button} from '@material-tailwind/react'
 import React from 'react'
-import { useAddPostMutation, useGetUserPostQuery } from './postApi';
+import {  useAddPostMutation, useGetUserPostQuery, useRemovePostMutation } from './postApi';
 
 const PostUi = ({ user }) => {
 
   const { isLoading, isError, error, data, isFetching } = useGetUserPostQuery(user);
 
-  const [addPost, { isLoading: load, data: dat, error: err }] = useAddPostMutation();
+  const [addPost,{isLoading:load,data:dat,isFetching:fetching}] = useAddPostMutation();
 
 
-  console.log(data);
-
-  if (isLoading) {
-    return <h1>Loading....</h1>
-  }
-
-
-
+const [delPost,{isLoading:lo}] = useRemovePostMutation();
 
   return (
 
 
-    <AccordionBody>
+    <AccordionBody >
+<div className='flex justify-between'>
+      <h1 className='font-bold text-2xl'>{user.info}</h1>
+      <Button size='sm' className='bg-green-500' loading={load} onClick={()=>addPost(user)}>ADD </Button>
 
-      <div className='flex justify-between mb-4[]'>
-        <h1 className='text-lg text-gray-800'>{user.info}</h1>
-
-        <Button onClick={() => addPost(user)} className='bg-green-600 ' size='sm'>Add</Button>
       </div>
-
-
       {data?.map((post) => {
         return <div key={post.id} className='flex justify-between space-y-4 items-baseline'>
           <h1>{post.title}</h1>
-          <Button size='sm' >Delete</Button>
+          <Button size='sm' loading={lo} onClick={()=>delPost(post.id)} className='bg-red-400'>Delete</Button>
+        
         </div>
       })}
 

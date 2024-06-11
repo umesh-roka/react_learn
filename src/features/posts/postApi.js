@@ -20,20 +20,42 @@ export const postApi = createApi({
           userId: user.id
         }
       }),
+      providesTags:(res,error,user)=>{
+        return [{type:'UserPost', id:user.id}]
 
+      }
     }),
 
-    addPost: builder.mutation({
-      query: (user) => ({
-        url: '/posts',
-        body: {
-          title: faker.music.songName(),
-          userId: user.id
-        },
-        method: 'POST'
-      })
-    })
+   AddPost:builder.mutation({
+    query:(user)=>({
+      url:'/posts',
+      body:{
+        title:faker.music.songName(),
+        userId:user.id,
+        
+      },
+      method:'POST',
+    
+    }),
+    invalidatesTags:(res,error,user)=>{
+      return [{type:'UserPost', id:user.id}]
 
+    },
+   }),
+
+
+   removePost:builder.mutation({
+    query:(id)=>({
+      url:`/posts/${id}`,
+    
+      method:'DELETE',
+    
+    }),
+    invalidatesTags:(res,error,user)=>{
+      return [{type:'UserPost', id:res.userId}]
+
+    },
+   })
 
 
   }),
@@ -46,4 +68,4 @@ export const postApi = createApi({
 
 
 
-export const { useGetUserPostQuery, useAddPostMutation } = postApi;
+export const { useGetUserPostQuery, useAddPostMutation,useRemovePostMutation } = postApi;
