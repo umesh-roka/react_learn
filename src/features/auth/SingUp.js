@@ -19,7 +19,7 @@ const SingUp = () => {
     }
   })
   return (
-    <Card color="transparent" shadow={false}>
+    <Card color="transparent" >
     <Typography variant="h4" color="blue-gray " className='text-center'>
     Register Your Account
     </Typography>
@@ -35,7 +35,7 @@ const SingUp = () => {
       </Typography>
        <Input
        name='username'
-       handleChange={handleChange}
+     onChange={handleChange}
        value={values.username}
         label='username'
         />
@@ -45,7 +45,7 @@ const SingUp = () => {
         </Typography>
         <Input
            name='email'
-           handleChange={handleChange}
+           onChange={handleChange}
            value={values.email}
           label='Email'
         />
@@ -54,7 +54,7 @@ const SingUp = () => {
         </Typography>
         <Input
          name='password'
-         handleChange={handleChange}
+         onChange={handleChange}
          value={values.password}
         label='password'
         />

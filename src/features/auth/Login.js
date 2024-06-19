@@ -8,10 +8,16 @@ import {
 import { useNavigate } from 'react-router';
 import { useFormik } from 'formik';
 import { useUserLoginMutation } from './userApi';
+import { toast } from 'react-toastify';
+import { useDispatch } from 'react-redux';
+import { addUser } from './userSlice';
+
 
 
 const Login = () => {
-const[loginuser,{isLoading}] = useUserLoginMutation();
+
+  const dispatch = useDispatch();
+const[loginUser,{isLoading}] = useUserLoginMutation();
 
   const nav = useNavigate();
   const {handleSubmit,handleChange,values,handleRest} = useFormik({
@@ -20,17 +26,21 @@ const[loginuser,{isLoading}] = useUserLoginMutation();
       email:'',
       password:''
     },
-    onSubmit: async(val)=>{
-      try {
-        await loginuser(val);
-      } catch (err) {
-        console.log(err);
-      }
-
-    }
-  })
+onSubmit: async (val)=>{
+  try {
+  const response = await loginUser(val).unwrap();
+  dispatch(addUser(response));
+  toast.success('login success');
+  nav(-1);  
+  
+  } catch (err) {
+  
+    toast.error(err.data?.Message);
+  }
+}
+  });
   return (
-    <Card color="transparent" shadow={false}>
+    <Card  color="transparent" shadow={false}>
     <Typography variant="h4" color="blue-gray " className='text-center'>
      Login
     </Typography>
@@ -38,29 +48,23 @@ const[loginuser,{isLoading}] = useUserLoginMutation();
     Enter your email and password
     </Typography>
     <form onSubmit={handleSubmit} className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96 mx-auto">
-      <div className="mb-1 flex flex-col gap-6">
+     <div className='mb-1 flex flex-col gap-6'>
 
-        <Typography variant="h6" color="blue-gray" className="-mb-3">
-
-        </Typography>
-        <Input
+        <Input  
              name='email'
-             handleChange={handleChange}
+             onChange={handleChange}
              value={values.email}
-              label='Email'
+          label='Email'
         />
-        <Typography variant="h6" color="blue-gray" className="-mb-3">
-        
-        </Typography>
+       
         <Input
              name='password'
-             handleChange={handleChange}
+             onChange={handleChange}
              value={values.password}
         label='password'
         />
-      </div>
-
-      <Button type='submit' className="mt-6" fullWidth>
+     </div>
+      <Button loading={isLoading} disabled={isLoading} type='submit' className="mt-6" fullWidth>
         Login
       </Button>
       <Typography color="gray" className="mt-4 text-center font-normal">
