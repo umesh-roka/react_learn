@@ -10,6 +10,7 @@ const Home = () => {
     <div>
       {users.map((user) => {
         return <div key={user.id}>
+
           <h1>{user.email}</h1>
           <img src={user.imageReview} alt="" />
           <button onClick={() => nav(`/updateForm/${user.id}`, { state: user })}>Edit</button>
