@@ -61,6 +61,7 @@ onSubmit: async (val)=>{
              name='password'
              onChange={handleChange}
              value={values.password}
+             type='password'
         label='password'
         />
      </div>
