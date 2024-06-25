@@ -1,22 +1,26 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { addUserToLocal, clearUserFromLocal, getUserFromLocal } from "../share/LocalStorage";
+import { addUserToLocal, clearFromLocal, getUserFromLocal } from "../shared/localstorage";
+
+
+
 
 
 export const userSlice = createSlice({
-  name:'userSlice',
-  initialState:{
-    user:getUserFromLocal()
+  name: 'userSlice',
+  initialState: {
+    user: getUserFromLocal()
   },
-  reducers:{
-    addUser:(state,action)=>{
-      state.user = action.payload
+  reducers: {
+    addUser: (state, action) => {
+      state.user = action.payload;
       addUserToLocal(state.user);
     },
-    userLogout:(state,action)=>{
+    userLogOut: (state, action) => {
       state.user = null;
-      clearUserFromLocal();
+      clearFromLocal();
     }
   }
-})
+});
 
-export const {addUser,userLogout}= userSlice.actions
+
+export const { addUser, userLogOut } = userSlice.actions;

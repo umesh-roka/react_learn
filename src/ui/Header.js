@@ -1,7 +1,6 @@
 import React from "react";
 import {
   Navbar,
- 
   Typography,
   Button,
   Menu,
@@ -9,88 +8,86 @@ import {
   MenuList,
   MenuItem,
   Avatar,
-
   IconButton,
 } from "@material-tailwind/react";
 import {
- 
   UserCircleIcon,
   ChevronDownIcon,
   PowerIcon,
   Bars2Icon,
-  ShoppingCartIcon,
   ShoppingBagIcon,
+  ShoppingCartIcon,
 } from "@heroicons/react/24/solid";
 import { useDispatch, useSelector } from "react-redux";
-import { userLogout } from "../features/auth/userSlice";
+import { userLogOut } from "../features/auth/userSlice";
 import { useNavigate } from "react-router";
- 
-// profile menu component
+
+
 const userProfile = [
   {
     label: "Profile",
     icon: UserCircleIcon,
-    value:'profile'
+    value: 'profile'
   },
   {
-    label: "cart",
+    label: "Carts",
     icon: ShoppingCartIcon,
-     value:'cart'
+    value: 'carts'
   },
-
- 
   {
     label: "Sign Out",
     icon: PowerIcon,
-    value:'logout'
+    value: 'logout'
   },
 ];
- 
+
 const adminProfile = [
   {
-    label: "product",
+    label: "Profile",
     icon: UserCircleIcon,
-     value:'product'
+    value: 'profile'
   },
   {
-    label: "shop",
+    label: "Products",
     icon: ShoppingBagIcon,
-    value:'shop'
+    value: 'products'
   },
-
- 
   {
     label: "Sign Out",
     icon: PowerIcon,
-     value:'logout'
+    value: 'logout'
   },
 ];
 
-function ProfileMenu({user}) {
-  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
- const dispatch = useDispatch();
- const menuItems = user.isAdmin ? adminProfile: userProfile;
 
+
+function ProfileMenu({ user }) {
+  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  const dispatch = useDispatch();
+  const nav = useNavigate();
   const closeMenu = () => setIsMenuOpen(false);
- 
-const handleClick = (val)=>{
-  switch(val){
-   case 'profile':
-  
-   break;
-   case 'product':
-  
-   break;
-   case 'logout':
-    dispatch(userLogout());
-  break;
-   default:
-    break;
-  
+  const menuItems = user.isAdmin ? adminProfile : userProfile;
+
+  const handleClick = (val) => {
+    switch (val) {
+      case 'profile':
+
+        break;
+
+      case 'products':
+        nav('/allProducts');
+        break;
+
+      case 'logout':
+        dispatch(userLogOut());
+
+
+    }
+    closeMenu();
+
   }
-  closeMenu();
-  }
-  
+
+
   return (
     <Menu open={isMenuOpen} handler={setIsMenuOpen} placement="bottom-end">
       <MenuHandler>
@@ -108,24 +105,22 @@ const handleClick = (val)=>{
           />
           <ChevronDownIcon
             strokeWidth={2.5}
-            className={`h-3 w-3 transition-transform ${
-              isMenuOpen ? "rotate-180" : ""
-            }`}
+            className={`h-3 w-3 transition-transform ${isMenuOpen ? "rotate-180" : ""
+              }`}
           />
         </Button>
       </MenuHandler>
       <MenuList className="p-1">
-        {menuItems.map(({ label, icon,value }, key) => {
+        {menuItems.map(({ label, icon, value }, key) => {
           const isLastItem = key === menuItems.length - 1;
           return (
             <MenuItem
               key={label}
-              onClick={()=>handleClick(value)}
-              className={`flex items-center gap-2 rounded ${
-                isLastItem
-                  ? "hover:bg-red-500/10 focus:bg-red-500/10 active:bg-red-500/10"
-                  : ""
-              }`}
+              onClick={() => handleClick(value)}
+              className={`flex items-center gap-2 rounded ${isLastItem
+                ? "hover:bg-red-500/10 focus:bg-red-500/10 active:bg-red-500/10"
+                : ""
+                }`}
             >
               {React.createElement(icon, {
                 className: `h-4 w-4 ${isLastItem ? "text-red-500" : ""}`,
@@ -146,25 +141,24 @@ const handleClick = (val)=>{
     </Menu>
   );
 }
- 
 
 
 const Header = () => {
- const nav = useNavigate();
-  const {user} = useSelector((state)=>state.userSlice);
-  
 
-  const [ setIsNavOpen] = React.useState(false);
- 
+  const { user } = useSelector((state) => state.userSlice);
+
+  const nav = useNavigate();
+  const [isNavOpen, setIsNavOpen] = React.useState(false);
+
   const toggleIsNavOpen = () => setIsNavOpen((cur) => !cur);
- 
+
   React.useEffect(() => {
     window.addEventListener(
       "resize",
       () => window.innerWidth >= 960 && setIsNavOpen(false),
     );
   }, []);
- 
+
   return (
     <Navbar className="mx-auto max-w-screen-xl p-2 lg:rounded-full lg:pl-6">
       <div className="relative mx-auto flex items-center justify-between text-blue-gray-900">
@@ -173,8 +167,9 @@ const Header = () => {
           href="#"
           className="mr-4 ml-2 cursor-pointer py-1.5 font-medium"
         >
-          Material Tailwind
+          Material Tailwinds
         </Typography>
+
         <IconButton
           size="sm"
           color="blue-gray"
@@ -184,18 +179,19 @@ const Header = () => {
         >
           <Bars2Icon className="h-6 w-6" />
         </IconButton>
- 
-      {user === null ?   <Button  onClick={()=>nav('/login')} size="sm" variant="text">
+
+        {user === null ? <Button onClick={() => nav('/login')} size="sm" variant="text">
           <span>Log In</span>
-        </Button>:
+        </Button> :
 
 
-        <ProfileMenu  user={user}/>
-      }
+          <ProfileMenu user={user} />
+        }
       </div>
-      
+
     </Navbar>
   );
 }
 
-export default Header
+
+export default Header;
